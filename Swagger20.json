@@ -1,0 +1,122 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "0.1.0",
+    "title": "Consolidación de informes",
+    "description": "Esta API de querys describe la funcionalidad del agregado \"consolidación de informes\" del bounded context de Pediatría de la clínica ABC. \n\nComprende los query necesarios para realizar las actividades de\\: \n\n* Consultar el informe diario de un pediatra\n* Consultar el informe mensual de pediatría\n\nLa referencia del proceso guia se encuentra en el siguiente [link](https://www.pediatria.gob.mx/archivos/normateca/normateca_manualpoitscex.pdf)\n",
+    "contact": {}
+  },
+  "host": "api.clinicaABC.com",
+  "basePath": "/Pediatria/Informes/v1",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/obtenerInformeDiario/{PediatraId}": {
+      "get": {
+        "description": "Este método recibe como parámetros el Id del pediatra y un código de seguridad para validar los permisos de consulta. Permite consultar un día específico o un rango de días especificado en los parámetros.",
+        "summary": "Permite consultar el informe diario de un pediatra a partir de su identificador.",
+        "operationId": "Permiteconsultarelinformediariodeunpediatraapartirdesuidentificador.",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "PediatraId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Id único del pediatra que se desea consultar."
+          },
+          {
+            "name": "SecurityToken",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "Código de seguridad utilizado para validar permisos de consulta."
+          },
+          {
+            "name": "Completa",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "description": "Define si es una consulta de todos los reportes disponibles."
+          },
+          {
+            "name": "FechaInicial",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "description": "Define el periodo inicial de consulta, diligenciar solo este parametro regresa el reporte únicamente del dia diligenciado."
+          },
+          {
+            "name": "FechaFinal",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date",
+            "description": "Define el periodo final de consulta."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informe diario del pediatra consultado en formato binario",
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            },
+            "headers": {}
+          }
+        }
+      }
+    },
+    "/obtenerInformeMensual": {
+      "get": {
+        "description": "Permite consultar el consolidado de consultas de pediatria impartidas a corte del mes y año solicitado",
+        "summary": "Permite consultar el informe mensual del área de pediatra.",
+        "operationId": "Permiteconsultarelinformemensualdeláreadepediatra.",
+        "deprecated": false,
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Mes",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "número de dos digitos que representa el mes que se desea consultar"
+          },
+          {
+            "name": "Año",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "description": "número de cuatro digitos que representa el año que se desea consultar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Informe mensual consultado en formato binario",
+            "schema": {
+              "type": "string",
+              "format": "binary"
+            },
+            "headers": {}
+          }
+        }
+      }
+    }
+  },
+  "tags": []
+}
